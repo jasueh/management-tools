@@ -1,5 +1,6 @@
 version: '3.4'
-
+#docker agent: 
+# docker run -d -p 9001:9001 --name portainer_agent --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/volumes:/var/lib/docker/volumes portainer/agent
 services:
   portainer:
     image: portainer/portainer-ce:latest
@@ -14,4 +15,32 @@ services:
     ports:
       - 8000:8000
       - 9443:9443
+    restart: always
+  glances:
+    container_name: glances
+    image: joweisberg/glances:latest
+    restart: unless-stopped
+    pid: host
+    ports:
+      - 61208:61208
+    environment:
+      - TZ=Europe/Paris
+      - GLANCES_OPT=--webserver
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${MOUNT_POINT}//glances:/glances/conf
+
+      
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ${MOUNT_POINT}/heimdall:/config
+    ports:
+      - 80:80
+      - 443:443
     restart: always
