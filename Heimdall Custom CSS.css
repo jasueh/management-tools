@@ -158,3 +158,9 @@
 .item:hover .details > .title {
   text-shadow: -1px -1px 1px rgba(255, 255, 255, 0.1), 1px 1px 5px rgba(10, 0, 60, 0.2);
 }
+
+.tooltip {
+  padding: 10px;
+  font-size: 10px;
+  bottom: 90px;
+}
